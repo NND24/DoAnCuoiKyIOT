@@ -1,0 +1,45 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+/csvs
+/0001-Feature-Extraction-PCAP2CSV/000- kitsune
+/0001-Feature-Extraction-PCAP2CSV/001-IoTNID
+/0001-Feature-Extraction-PCAP2CSV/002-CIC2022
+/0001-Feature-Extraction-PCAP2CSV/003-mazebolt
+/0001-Feature-Extraction-PCAP2CSV/004-BoTIoT
+/0001-Feature-Extraction-PCAP2CSV/005-APA-DDoS
+/0001-Feature-Extraction-PCAP2CSV/006-EDGEIIOT
+/0001-Feature-Extraction-PCAP2CSV/007-TONIOT
+/0001-Feature-Extraction-PCAP2CSV/008-IoT-ENV
+
+
+/0002-Feature-Selection/pdfs
+/0002-Feature-Selection/results
