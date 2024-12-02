@@ -43,3 +43,8 @@ yarn-error.log*
 
 /0002-Feature-Selection/pdfs
 /0002-Feature-Selection/results
+
+
+/0004-Performance-Evaluation/models
+/0004-Performance-Evaluation/pdfs
+/0004-Performance-Evaluation/results
