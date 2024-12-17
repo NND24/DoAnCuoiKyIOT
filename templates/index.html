@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Attack Detection</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f9;
+        color: #333;
+        text-align: center;
+      }
+
+      h1 {
+        background-color: #007bff;
+        color: #fff;
+        padding: 20px 0;
+        margin: 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      form {
+        margin: 30px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+      }
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+        text-align: left;
+      }
+
+      input[type="file"],
+      select {
+        width: 95%;
+        padding: 8px;
+        margin-bottom: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      h2 {
+        margin-top: 30px;
+        color: #007bff;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      li {
+        background-color: #fff;
+        padding: 10px;
+        margin: 10px auto;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        max-width: 400px;
+        text-align: left;
+      }
+
+      li strong {
+        color: #007bff;
+      }
+
+      p {
+        font-size: 16px;
+        margin: 20px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>IOT Attack Detection System</h1>
+    <form method="POST" enctype="multipart/form-data">
+      <label for="file">Upload CSV File:</label>
+      <input type="file" name="file" accept=".csv" required />
+      <br />
+      <label for="algorithm">Choose Algorithm:</label>
+      <select name="algorithm" required>
+        <option value="DT">Decision Tree</option>
+        <option value="LR">Logistic Regression</option>
+      </select>
+      <br />
+      <button type="submit">Predict</button>
+    </form>
+
+    {% if results %}
+    <h2>Results (Algorithm: {{ algorithm }})</h2>
+    {% if results %}
+    <ul>
+      {% for result in results %}
+      <li>
+        <strong>Attack Type:</strong> {{ result.Attack_Type }} - <strong>Probability:</strong> {{ result.Probability }}
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>No attacks detected.</p>
+    {% endif %} {% endif %}
+  </body>
+</html>
