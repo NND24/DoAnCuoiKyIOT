@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Attack Detection</title>
+    <title>IoT Attack Detection</title>
     <style>
       body {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
-        background-color: #f4f4f9;
-        color: #333;
+        background-color: #f8f9fa;
+        color: #212529;
         text-align: center;
       }
 
@@ -20,6 +20,7 @@
         padding: 20px 0;
         margin: 0;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-transform: uppercase;
       }
 
       form {
@@ -27,36 +28,37 @@
         background-color: #fff;
         padding: 20px;
         border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        max-width: 400px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
       }
 
       label {
         display: block;
         font-weight: bold;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
         text-align: left;
       }
 
       input[type="file"],
       select {
-        width: 95%;
-        padding: 8px;
+        width: 100%;
+        padding: 10px;
         margin-bottom: 16px;
-        border: 1px solid #ccc;
+        border: 1px solid #ced4da;
         border-radius: 4px;
-        font-size: 14px;
+        font-size: 16px;
       }
 
       button {
         background-color: #007bff;
         color: #fff;
         border: none;
-        padding: 10px 20px;
+        padding: 12px 20px;
         font-size: 16px;
         border-radius: 4px;
         cursor: pointer;
-        transition: background-color 0.3s;
+        transition: all 0.3s ease;
+        width: 100%;
       }
 
       button:hover {
@@ -68,23 +70,39 @@
         color: #007bff;
       }
 
-      ul {
-        list-style: none;
-        padding: 0;
+      table {
+        width: 80%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       }
 
-      li {
-        background-color: #fff;
-        padding: 10px;
-        margin: 10px auto;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        max-width: 400px;
-        text-align: left;
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: center;
       }
 
-      li strong {
+      th {
+        background-color: #007bff;
+        color: #fff;
+        text-transform: uppercase;
+      }
+
+      td {
+        background-color: #f8f9fa;
+      }
+
+      a {
+        text-decoration: none;
         color: #007bff;
+        font-weight: bold;
+        transition: color 0.3s;
+      }
+
+      a:hover {
+        color: #0056b3;
       }
 
       p {
@@ -94,10 +112,10 @@
     </style>
   </head>
   <body>
-    <h1>IOT Attack Detection System</h1>
+    <h1>IoT Attack Detection System</h1>
     <form method="POST" enctype="multipart/form-data">
       <label for="file">Upload CSV File:</label>
-      <input type="file" name="file" accept=".csv" required />
+      <input type="file" name="file" accept=".csv" required style="width: 95%" />
       <br />
       <label for="algorithm">Choose Algorithm:</label>
       <select name="algorithm" required>
@@ -109,17 +127,21 @@
     </form>
 
     {% if results %}
-    <h2>Results (Algorithm: {{ algorithm }})</h2>
-    {% if results %}
-    <ul>
+    <h2>Prediction Results:</h2>
+    <table>
+      <tr>
+        <th>Index</th>
+        <th>Attack Type</th>
+        <th>Probability</th>
+      </tr>
       {% for result in results %}
-      <li>
-        <strong>Attack Type:</strong> {{ result.Attack_Type }} - <strong>Probability:</strong> {{ result.Probability }}
-      </li>
+      <tr>
+        <td>{{ result.Index }}</td>
+        <td>{{ result.Attack_Type }}</td>
+        <td>{{ result.Probability }}</td>
+      </tr>
       {% endfor %}
-    </ul>
-    {% else %}
-    <p>No attacks detected.</p>
-    {% endif %} {% endif %}
+    </table>
+    {% endif %}
   </body>
 </html>

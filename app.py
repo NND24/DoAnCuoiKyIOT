@@ -44,67 +44,54 @@ model_paths = {
     }
 }
 
-# # Predict function
-# def predict_attack(input_data, selected_algorithm):
-#     results = []
-#     for attack, model_path in model_paths[selected_algorithm].items():
-#         model = joblib.load(model_path)
-#         features = attack_features[attack]
-#         filtered_data = input_data[features[:-1]]  # Exclude 'Label'
-#         predictions = model.predict(filtered_data)
-#         probabilities = model.predict_proba(filtered_data)[:, 1]
-
-#         for pred, prob in zip(predictions, probabilities):
-#             if pred == 1:  # Only show detected attacks
-#                 results.append({
-#                     "Attack_Type": attack,
-#                     "Probability": float(prob)
-#                 })
-#     return results
-
-# Tìm tấn công có xác suất cao nhất
 def predict_attack(input_data, selected_algorithm):
     final_results = []
 
-    # Lặp qua từng loại tấn công trong thuật toán được chọn
     for attack, model_path in model_paths[selected_algorithm].items():
-        # Tải mô hình tương ứng
         model = joblib.load(model_path)
-        
-        # Lấy danh sách đặc trưng cho loại tấn công
         features = attack_features[attack]
-        filtered_data = input_data[features[:-1]]  # Loại bỏ cột "Label" nếu có
-        
-        # Dự đoán xác suất
+        filtered_data = input_data[features[:-1]]  # Exclude 'Label'
         probabilities = model.predict_proba(filtered_data)[:, 1]
         max_prob = max(probabilities)
 
-        # Chỉ thêm kết quả có xác suất cao hơn ngưỡng 0.5
         if max_prob > 0.5:
             final_results.append({"Attack_Type": attack, "Probability": max_prob})
     
-    # Trả về kết quả có xác suất cao nhất
     if final_results:
         return sorted(final_results, key=lambda x: x['Probability'], reverse=True)[:1]
     return []
 
+def predict_from_csv(file_path, selected_algorithm, output_file):
+    input_data = pd.read_csv(file_path)
+    results = []
 
+    for index, row in input_data.iterrows():
+        prediction = predict_attack(pd.DataFrame([row]), selected_algorithm)
+        if prediction:
+            results.append({"Index": index, "Attack_Type": prediction[0]["Attack_Type"], "Probability": prediction[0]["Probability"]})
+        else:
+            results.append({"Index": index, "Attack_Type": "None", "Probability": 0})
+    
+    result_df = pd.DataFrame(results)
+    result_df.to_csv(output_file, index=False)
+    return result_df
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
-        # Handle uploaded file
         file = request.files['file']
         algorithm = request.form.get('algorithm')
 
         if file and algorithm:
             file_path = os.path.join("uploads", file.filename)
             file.save(file_path)
-            input_data = pd.read_csv(file_path)
-            
-            # Make predictions
-            results = predict_attack(input_data, algorithm)
-            return render_template("index.html", results=results, algorithm=algorithm)
+
+            output_file = os.path.join("uploads", f"result_{file.filename}")
+            result_df = predict_from_csv(file_path, algorithm, output_file)
+
+            # Render results to the template
+            results = result_df.to_dict('records')
+            return render_template("index.html", results=results, algorithm=algorithm, output_file=output_file)
 
     return render_template("index.html", results=None)
 
